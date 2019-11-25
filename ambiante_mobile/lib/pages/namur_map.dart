@@ -119,22 +119,21 @@ class _NamurMapState extends State<NamurMap> {
     return FlutterMap(
       mapController: widget.controller,
       options: MapOptions(
-        center: LatLng(56.73173, 11.533808),
-        minZoom: 12.0,
-        maxZoom: 14.0,
-        zoom: 13.0,
-        swPanBoundary: LatLng(56.6877, 11.5089),
-        nePanBoundary: LatLng(56.7378, 11.6644),
+        center: LatLng(50.464281, 4.860729),
+        minZoom: 10.0,
+        zoom: 15.0,
+        swPanBoundary: LatLng(50.420524, 4.771015),
+        nePanBoundary: LatLng(50.548536, 5.092013),
       ),
       layers: [
         TileLayerOptions(
-          tileProvider: AssetTileProvider(),
-          maxZoom: 14.0,
-          urlTemplate: 'assets/map/anholt_osmbright/{z}/{x}/{y}.png',
-          // For example purposes. It is recommended to use
-          // TileProvider with a caching and retry strategy, like
-          // NetworkTileProvider or CachedNetworkTileProvider
-        ),
+          urlTemplate: "https://api.tiles.mapbox.com/v4/"
+              "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
+          additionalOptions: {
+            'accessToken': 'pk.eyJ1IjoiamFjcXVhbnQiLCJhIjoiY2syeHFpemxqMDAxYzNsbXFrcWwwOGxmbyJ9.F94lOloBRxltcsySUlvwGA',
+            'id': 'mapbox.streets',
+          },
+          ),
         MarkerLayerOptions(markers: markers),
       ],
     );

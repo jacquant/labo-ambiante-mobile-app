@@ -4,20 +4,20 @@
             {
                 "id": "event1",
                 "name": "Concert Rock au monda !",
-                "coordX": "56.73173",
-                "coordY": "11.533808"
+                "coordX": "50.466216",
+                "coordY": "4.858185"
             },
             {
                 "id": "event2",
                 "name": "Bibitive en INFO !",
-                "coordX": "56.72173",
-                "coordY": "11.523808"
+                "coordX": "50.466428",
+                "coordY": "4.859000"
             },
             {
                 "id": "event3",
                 "name": "Ici on travaille ou on dort...",
-                "coordX": "56.74173",
-                "coordY": "11.543808"
+                "coordX": "50.466626",
+                "coordY": "4.856103"
             }
         ]
     }

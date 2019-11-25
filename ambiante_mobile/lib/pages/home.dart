@@ -27,7 +27,7 @@ class HomePage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
               child: Text(
-                  'This is an offline map that is showing Anholt Island, Denmark.'),
+                  'Ambiante et mobile Project Map'),
             ),
             Flexible(
               child: map,

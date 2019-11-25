@@ -8,9 +8,9 @@ dependencies:
 
   cupertino_icons: ^0.1.2
   
-  flutter_map: ^0.6.1+2
+  flutter_map: ^0.7.3
   # Launch urls in other apps
-  url_launcher: ^5.1.2
+  url_launcher: ^5.2.5
   
 # Required for development
 dev_dependencies:
