@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import './pages/home.dart';
 import './pages/tap_to_add.dart';
-
+import './pages/filters.dart';
 
 
 void main() => runApp(MyApp());
@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
       home: HomePage(),
       routes: <String, WidgetBuilder>{
         TapToAddPage.route: (context) => TapToAddPage(),
+        FiltersPage.route: (context) => FiltersPage(),
       },
     );
   }

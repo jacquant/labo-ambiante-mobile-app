@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 
+import '../pages/home.dart';
+
 import '../widgets/drawer.dart';
 
 class TapToAddPage extends StatefulWidget {
@@ -52,16 +54,21 @@ class TapToAddPageState extends State<TapToAddPage> {
             Flexible(
               child: FlutterMap(
                 options: MapOptions(
-                    center: LatLng(56.704173, 11.543808),
-                    minZoom: 12.0,
-                    maxZoom: 14.0,
-                    zoom: 13.0,
+                    center: LatLng(50.464281, 4.860729),
+                    minZoom: 10.0,
+                    zoom: 15.0,
+                    swPanBoundary: LatLng(50.420524, 4.771015),
+                    nePanBoundary: LatLng(50.548536, 5.092013),
                     onTap: _handleTap),
                 layers: [
                   TileLayerOptions(
-                    tileProvider: AssetTileProvider(),
-                    maxZoom: 14.0,
-                    urlTemplate: 'assets/map/anholt_osmbright/{z}/{x}/{y}.png',
+                    urlTemplate: "https://api.tiles.mapbox.com/v4/"
+                        "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
+                    additionalOptions: {
+                      'accessToken':
+                          'pk.eyJ1IjoiamFjcXVhbnQiLCJhIjoiY2syeHFpemxqMDAxYzNsbXFrcWwwOGxmbyJ9.F94lOloBRxltcsySUlvwGA',
+                      'id': 'mapbox.streets',
+                    },
                   ),
                   MarkerLayerOptions(markers: markers)
                 ],
@@ -129,7 +136,12 @@ class TapToAddPageState extends State<TapToAddPage> {
                                   child: Text('Valider'),
                                   onPressed: () {
                                     if (_formKey.currentState.validate()) {
-                                      _formKey.currentState.save();
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => HomePage()),
+                                      );
+                                     // _formKey.currentState.save();
                                     }
                                   },
                                 ),

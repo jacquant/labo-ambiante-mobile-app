@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../pages/home.dart';
-
+import '../pages/filters.dart';
 import '../pages/tap_to_add.dart';
 
 Drawer buildDrawer(BuildContext context, String currentRoute) {
@@ -25,6 +25,13 @@ Drawer buildDrawer(BuildContext context, String currentRoute) {
           selected: currentRoute == HomePage.route,
           onTap: () {
             Navigator.pushReplacementNamed(context, HomePage.route);
+          },
+        ),
+        ListTile(
+          title: const Text("Choisir mes types d'évènements"),
+          selected: currentRoute == FiltersPage.route,
+          onTap: () {
+            Navigator.pushReplacementNamed(context, FiltersPage.route);
           },
         ),
       ],
