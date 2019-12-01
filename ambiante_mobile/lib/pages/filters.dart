@@ -21,7 +21,7 @@ class FiltersPageState extends State<FiltersPage> {
   //
   // Note: This is a GlobalKey<FormState>,
   // not a GlobalKey<MyCustomFormState>.
-  final _formKey = GlobalKey<FormState>();
+  //final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,21 +29,15 @@ class FiltersPageState extends State<FiltersPage> {
       appBar: AppBar(title: Text("Définissez votre propre filtre !")),
       drawer: buildDrawer(context, FiltersPage.route),
       body: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Padding(
+          padding: EdgeInsets.all(8.0),
+          child: ListView(
+            padding: const EdgeInsets.all(8),
+            children: <Widget>[
+              Padding(
               padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
               child: Text("Voici une liste de filtres"),
             ),
-            Flexible(
-              // Build a Form widget using the _formKey created above.
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    TextFormField(
+              TextFormField(
                       decoration: const InputDecoration(
                         icon: Icon(Icons.location_city),
                         hintText: 'Quelle ville visitez-vous ?',
@@ -92,11 +86,7 @@ class FiltersPageState extends State<FiltersPage> {
                             : null;
                       },
                     ),
-                  ],
-                ),
-              ),
-            ),
-            FlatButton(
+                    FlatButton(
               color: Theme.of(context).accentColor,
               textColor: Colors.white,
               shape: RoundedRectangleBorder(
@@ -111,9 +101,8 @@ class FiltersPageState extends State<FiltersPage> {
                 );
               },
             ),
-          ],
-        ),
-      ),
+            ],
+          )),
     );
   }
 }

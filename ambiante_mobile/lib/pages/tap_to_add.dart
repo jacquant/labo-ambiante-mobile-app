@@ -1,6 +1,9 @@
+import 'package:ambiante_mobile/data/load_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
+import 'package:uuid/uuid.dart';
+import 'package:mdi/mdi.dart';
 
 import '../pages/home.dart';
 
@@ -16,11 +19,21 @@ class TapToAddPage extends StatefulWidget {
 }
 
 class TapToAddPageState extends State<TapToAddPage> {
+  var uuid = Uuid();
+
   List<LatLng> tappedPoints = [];
+
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+
+    TextEditingController titleController = new TextEditingController();
+    TextEditingController startTimeController = new TextEditingController();
+    TextEditingController endTimeController = new TextEditingController();
+    TextEditingController descriptionController = new TextEditingController();
+    TextEditingController categoryController = new TextEditingController();
+
     var markers = tappedPoints.map((latlng) {
       return Marker(
         width: 40.0,
@@ -28,7 +41,7 @@ class TapToAddPageState extends State<TapToAddPage> {
         point: latlng,
         builder: (ctx) => Container(
           child: IconButton(
-            icon: Icon(Icons.audiotrack),
+            icon: Icon(Icons.add_location),
             color: Colors.blue,
             iconSize: 45.0,
             onPressed: () {
@@ -86,15 +99,17 @@ class TapToAddPageState extends State<TapToAddPage> {
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return AlertDialog(
-                        content: Form(
-                          key: _formKey,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: TextFormField(
+                      return Scaffold(
+                        key: _formKey,
+                        appBar:
+                            AppBar(title: Text("Définissez votre évènement !")),
+                        body: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: ListView(
+                              padding: const EdgeInsets.all(8),
+                              children: <Widget>[
+                                TextFormField(
+                                  controller: titleController,
                                   decoration: const InputDecoration(
                                     icon: Icon(Icons.person),
                                     hintText: 'Donnez vie à votre évènement',
@@ -110,10 +125,42 @@ class TapToAddPageState extends State<TapToAddPage> {
                                         : null;
                                   },
                                 ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: TextFormField(
+                                TextFormField(
+                                  controller: categoryController,
+                                  decoration: const InputDecoration(
+                                    icon: Icon(Icons.party_mode),
+                                    hintText: "Quel est le type d'évènement",
+                                    labelText: 'Rock, Metal, Artistique *',
+                                  ),
+                                  onSaved: (String value) {
+                                    // This optional block of code can be used to run
+                                    // code when the user saves the form.
+                                  },
+                                  validator: (String value) {
+                                    return value.contains('@')
+                                        ? 'Do not use the @ char.'
+                                        : null;
+                                  },
+                                ),
+                                TextFormField(
+                                  controller: descriptionController,
+                                  decoration: const InputDecoration(
+                                    icon: Icon(Icons.book),
+                                    hintText: "Ajoutez une description ",
+                                    labelText: '... *',
+                                  ),
+                                  onSaved: (String value) {
+                                    // This optional block of code can be used to run
+                                    // code when the user saves the form.
+                                  },
+                                  validator: (String value) {
+                                    return value.contains('@')
+                                        ? 'Do not use the @ char.'
+                                        : null;
+                                  },
+                                ),
+                                TextFormField(
+                                  controller: startTimeController,
                                   decoration: const InputDecoration(
                                     icon: Icon(Icons.person),
                                     hintText: 'Donnez une heure de rendez-vous',
@@ -129,26 +176,70 @@ class TapToAddPageState extends State<TapToAddPage> {
                                         : null;
                                   },
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: RaisedButton(
+                                TextFormField(
+                                  controller: endTimeController,
+                                  decoration: const InputDecoration(
+                                    icon: Icon(Icons.person),
+                                    hintText: "Fin de l'évènement",
+                                    labelText: '18h00-22h00 *',
+                                  ),
+                                  onSaved: (String value) {
+                                    // This optional block of code can be used to run
+                                    // code when the user saves the form.
+                                  },
+                                  validator: (String value) {
+                                    return value.contains('@')
+                                        ? 'Do not use the @ char.'
+                                        : null;
+                                  },
+                                ),
+                                RaisedButton(
                                   child: Text('Valider'),
                                   onPressed: () {
-                                    if (_formKey.currentState.validate()) {
+                                    if (tappedPoints.length == 1) {
+                                      var id = uuid.v1();
+                                      var source = "A user";
+                                      var organizers = "A user";
+                                      var soundLevel = 5;
+                                      var website = "";
+                                      var mail = "user-mail.com";
+                                      var phone = "000-000-000";
+                                      var streetNumber = "";
+                                      var street = "";
+                                      var city = "Namur";
+                                      var zipCode = "5000";
+                                    
+
+                                      makePostRequest(
+                                          id,
+                                          titleController.text,
+                                          organizers,
+                                          startTimeController.text,
+                                          endTimeController.text,
+                                          descriptionController.text,
+                                          categoryController.text,
+                                          zipCode,
+                                          city,
+                                          street,
+                                          streetNumber,
+                                          phone,
+                                          mail,
+                                          website,
+                                          tappedPoints[0].latitude,
+                                          tappedPoints[0].longitude,
+                                          source,
+                                          soundLevel);
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => HomePage()),
                                       );
-                                     // _formKey.currentState.save();
+                                      // _formKey.currentState.save();
                                     }
                                   },
                                 ),
-                              )
-                            ],
-                          ),
-                        ),
+                              ],
+                            )),
                       );
                     });
               },
@@ -165,3 +256,5 @@ class TapToAddPageState extends State<TapToAddPage> {
     });
   }
 }
+
+

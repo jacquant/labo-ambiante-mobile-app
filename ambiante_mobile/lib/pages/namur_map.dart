@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:ambiante_mobile/data/locaux_parser.dart';
+import 'package:ambiante_mobile/data/load_events.dart';
 import 'package:latlong/latlong.dart';
+import 'package:mdi/mdi.dart';
+
+import 'launch_google_map.dart';
 
 class NamurMap extends StatefulWidget {
   final _NamurMapState state = _NamurMapState();
@@ -27,58 +30,122 @@ class _NamurMapState extends State<NamurMap> {
 
   // Fill the markers list with events from the JSON.
   void loadMarkers() async {
-    var dataJson = await loadLocaux();
+    var dataJson = await fetchEvents();
 
     setState(() {
       // re-initialize the list of markers
       markers = [];
 
-      for (var event in dataJson['events']['namur']) {
-        String eventName = event['name'];
-        var coordXY = LatLng(
-            double.parse(event['coordX']), double.parse(event['coordY']));
-        markers.add(createMarker(eventName, coordXY));
+      for (var event in dataJson['events']) {
+        String eventName = event['title'];
+        var coordXY = LatLng(event['lat'], event['lon']);
+        var typeEvent = event['category'];
+        var source = event['source'];
+        var soundLevel = event['sound_level'];
+        markers.add(
+            createMarker(eventName, coordXY, typeEvent, source, soundLevel));
       }
     });
   }
 
   // This fct creates a Marker and place it on the coordinate XY
-  Marker createMarker(String id, LatLng coordXY) {
-    var info = _infoEvent(id, coordXY);
+  Marker createMarker(String id, LatLng coordXY, String typeEvent,
+      String source, double soundLevel) {
+    var info = _infoEvent(id, coordXY, typeEvent, source, soundLevel);
+
+    Map listIcons = {
+      '': Icon(Icons.healing),
+      'Metal': Icon(Icons.healing),
+      'string': Icon(Icons.healing),
+      'sport': Icon(Icons.visibility),
+      'exposition': Icon(Icons.panorama_horizontal),
+      'concert': Icon(Icons.music_note),
+      'spectacle': Icon(Icons.child_care),
+      'conference': Icon(Icons.record_voice_over),
+      'foire': Icon(Icons.supervised_user_circle),
+      'cinema': Icon(Icons.theaters),
+      'visite': Icon(Icons.tag_faces),
+      'activite': Icon(Mdi.train)
+    };
+    var eventIcon = listIcons[typeEvent];
+    var eventColor = Colors.red;
+    if (source == 'namur-agenda-des-evenements') {
+      eventColor = Colors.blue;
+    }
+
+    var eventIconSize = 15.0 + (soundLevel * 5.0);
 
     var marker = Marker(
       width: 35.0,
       height: 35.0,
       point: coordXY,
-      builder: (context) => IconButton(
-        icon: Icon(Icons.music_note),
-        color: Theme.of(context).accentColor,
-        iconSize: 45.0,
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            builder: (builder) {
-              return Container(
-                child: ListView(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  children: info,
-                ),
-              );
-            },
-          );
-        },
+      builder: (context) => Container(
+        color: Colors.green,
+        alignment: Alignment.topRight,
+        child: IconButton(
+          icon: eventIcon,
+          color: eventColor,
+          iconSize: eventIconSize,
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (builder) {
+                return Container(
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    children: info,
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
 
     return marker;
   }
 
-  List<Widget> _infoEvent(String id, LatLng coordXY) {
+  List<Widget> _infoEvent(String id, LatLng coordXY, String typeEvent,
+      String source, double soundLevel) {
     List<Widget> textWidgets = [];
 
     textWidgets.add(
       Text(
         id,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 24.0,
+        ),
+      ),
+    );
+
+    textWidgets.add(
+      Text(
+        typeEvent,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 24.0,
+        ),
+      ),
+    );
+
+    textWidgets.add(
+      Text(
+        source,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 24.0,
+        ),
+      ),
+    );
+
+    textWidgets.add(
+      Text(
+        soundLevel.toString(),
         textAlign: TextAlign.center,
         style: TextStyle(
           fontWeight: FontWeight.bold,
@@ -99,7 +166,7 @@ class _NamurMapState extends State<NamurMap> {
             "Voir l'itinéraire",
           ),
           onPressed: () {
-            //MapUtils.openMap(coordXY.latitude, coordXY.longitude);
+            MapUtils.openMap(coordXY.latitude, coordXY.longitude);
           },
         ),
       ),
@@ -130,10 +197,11 @@ class _NamurMapState extends State<NamurMap> {
           urlTemplate: "https://api.tiles.mapbox.com/v4/"
               "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
           additionalOptions: {
-            'accessToken': 'pk.eyJ1IjoiamFjcXVhbnQiLCJhIjoiY2syeHFpemxqMDAxYzNsbXFrcWwwOGxmbyJ9.F94lOloBRxltcsySUlvwGA',
+            'accessToken':
+                'pk.eyJ1IjoiamFjcXVhbnQiLCJhIjoiY2syeHFpemxqMDAxYzNsbXFrcWwwOGxmbyJ9.F94lOloBRxltcsySUlvwGA',
             'id': 'mapbox.streets',
           },
-          ),
+        ),
         MarkerLayerOptions(markers: markers),
       ],
     );

@@ -4,10 +4,10 @@ import './pages/home.dart';
 import './pages/tap_to_add.dart';
 import './pages/filters.dart';
 
-
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
