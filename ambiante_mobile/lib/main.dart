@@ -3,10 +3,16 @@ import 'package:flutter/material.dart';
 import './pages/home.dart';
 import './pages/tap_to_add.dart';
 import './pages/filters.dart';
+import 'dart:convert';
 
 void main() => runApp(MyApp());
 
+List<String> global_city = [];
+List<String> global_cat = [];
+List<String> global_sound = [];
+
 class MyApp extends StatelessWidget {
+
 
   // This widget is the root of your application.
   @override

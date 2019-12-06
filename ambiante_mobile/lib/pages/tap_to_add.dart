@@ -4,6 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import 'package:uuid/uuid.dart';
 import 'package:mdi/mdi.dart';
+import 'dart:convert';
 
 import '../pages/home.dart';
 
@@ -27,12 +28,14 @@ class TapToAddPageState extends State<TapToAddPage> {
 
   @override
   Widget build(BuildContext context) {
-
     TextEditingController titleController = new TextEditingController();
     TextEditingController startTimeController = new TextEditingController();
     TextEditingController endTimeController = new TextEditingController();
     TextEditingController descriptionController = new TextEditingController();
     TextEditingController categoryController = new TextEditingController();
+    TextEditingController websiteController = new TextEditingController();
+    TextEditingController streetController = new TextEditingController();
+    TextEditingController streetNumberController = new TextEditingController();
 
     var markers = tappedPoints.map((latlng) {
       return Marker(
@@ -193,6 +196,57 @@ class TapToAddPageState extends State<TapToAddPage> {
                                         : null;
                                   },
                                 ),
+                                TextFormField(
+                                  controller: streetController,
+                                  decoration: const InputDecoration(
+                                    icon: Icon(Icons.streetview),
+                                    hintText: 'rue Jean Colin',
+                                    labelText: "Entrez la rue où votre évènement se déroulera",
+                                  ),
+                                  onSaved: (String value) {
+                                    // This optional block of code can be used to run
+                                    // code when the user saves the form.
+                                  },
+                                  validator: (String value) {
+                                    return value.contains('@')
+                                        ? 'Do not use the @ char.'
+                                        : null;
+                                  },
+                                ),
+                                TextFormField(
+                                  controller: streetNumberController,
+                                  decoration: const InputDecoration(
+                                    icon: Icon(Icons.confirmation_number),
+                                    hintText: '16',
+                                    labelText: "Entrez le numéro du batiment",
+                                  ),
+                                  onSaved: (String value) {
+                                    // This optional block of code can be used to run
+                                    // code when the user saves the form.
+                                  },
+                                  validator: (String value) {
+                                    return value.contains('@')
+                                        ? 'Do not use the @ char.'
+                                        : null;
+                                  },
+                                ),
+                                TextFormField(
+                                  controller: websiteController,
+                                  decoration: const InputDecoration(
+                                    icon: Icon(Icons.web),
+                                    hintText: 'www.MonSiteWeb.com',
+                                    labelText: "Entrez l'url de votre site",
+                                  ),
+                                  onSaved: (String value) {
+                                    // This optional block of code can be used to run
+                                    // code when the user saves the form.
+                                  },
+                                  validator: (String value) {
+                                    return value.contains('@')
+                                        ? 'Do not use the @ char.'
+                                        : null;
+                                  },
+                                ),
                                 RaisedButton(
                                   child: Text('Valider'),
                                   onPressed: () {
@@ -200,15 +254,13 @@ class TapToAddPageState extends State<TapToAddPage> {
                                       var id = uuid.v1();
                                       var source = "A user";
                                       var organizers = "A user";
-                                      var soundLevel = 5;
-                                      var website = "";
+                                      var soundLevel = 60;
                                       var mail = "user-mail.com";
                                       var phone = "000-000-000";
                                       var streetNumber = "";
                                       var street = "";
                                       var city = "Namur";
                                       var zipCode = "5000";
-                                    
 
                                       makePostRequest(
                                           id,
@@ -220,11 +272,11 @@ class TapToAddPageState extends State<TapToAddPage> {
                                           categoryController.text,
                                           zipCode,
                                           city,
-                                          street,
-                                          streetNumber,
+                                          streetController.text,
+                                          streetNumberController.text,
                                           phone,
                                           mail,
-                                          website,
+                                          websiteController.text,
                                           tappedPoints[0].latitude,
                                           tappedPoints[0].longitude,
                                           source,
@@ -256,5 +308,3 @@ class TapToAddPageState extends State<TapToAddPage> {
     });
   }
 }
-
-

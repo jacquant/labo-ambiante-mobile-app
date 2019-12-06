@@ -4,6 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:ambiante_mobile/data/load_events.dart';
 import 'package:latlong/latlong.dart';
 import 'package:mdi/mdi.dart';
+import 'dart:convert' show utf8;
 
 import 'launch_google_map.dart';
 
@@ -42,45 +43,82 @@ class _NamurMapState extends State<NamurMap> {
         var typeEvent = event['category'];
         var source = event['source'];
         var soundLevel = event['sound_level'];
-        markers.add(
-            createMarker(eventName, coordXY, typeEvent, source, soundLevel));
+
+        var description = event['description'];
+        var start_time = event['start_time'];
+        var end_time = event['end_time'];
+        var num_street = event['street_number'];
+        var street_name = event['street'];
+        var website = event['website'];
+        markers.add(createMarker(
+            eventName,
+            coordXY,
+            typeEvent,
+            source,
+            soundLevel,
+            description,
+            start_time,
+            end_time,
+            num_street,
+            street_name,
+            website));
       }
     });
   }
 
   // This fct creates a Marker and place it on the coordinate XY
-  Marker createMarker(String id, LatLng coordXY, String typeEvent,
-      String source, double soundLevel) {
-    var info = _infoEvent(id, coordXY, typeEvent, source, soundLevel);
+  Marker createMarker(
+      String id,
+      LatLng coordXY,
+      String typeEvent,
+      String source,
+      double soundLevel,
+      String description,
+      String start_time,
+      String end_time,
+      String num_street,
+      String street_name,
+      String website) {
+    var info = _infoEvent(id, coordXY, typeEvent, source, soundLevel,
+        description, start_time, end_time, num_street, street_name, website);
 
     Map listIcons = {
-      '': Icon(Icons.healing),
-      'Metal': Icon(Icons.healing),
-      'string': Icon(Icons.healing),
-      'sport': Icon(Icons.visibility),
-      'exposition': Icon(Icons.panorama_horizontal),
-      'concert': Icon(Icons.music_note),
-      'spectacle': Icon(Icons.child_care),
-      'conference': Icon(Icons.record_voice_over),
       'foire': Icon(Icons.supervised_user_circle),
+      'exposition': Icon(Icons.panorama_horizontal),
+      'conference': Icon(Icons.record_voice_over),
       'cinema': Icon(Icons.theaters),
+      'sport': Icon(Icons.visibility),
+      'concert': Icon(Icons.music_note),
       'visite': Icon(Icons.tag_faces),
-      'activite': Icon(Mdi.train)
+      'spectacle': Icon(Icons.child_care),
+      'unknown': Icon(Icons.cloud),
     };
-    var eventIcon = listIcons[typeEvent];
+
+    var eventIcon = listIcons['unknown'];
+    if (listIcons.containsKey(typeEvent)) {
+      eventIcon = listIcons[typeEvent];
+    }
+
     var eventColor = Colors.red;
     if (source == 'namur-agenda-des-evenements') {
       eventColor = Colors.blue;
     }
 
-    var eventIconSize = 15.0 + (soundLevel * 5.0);
+    var eventIconSize = 5*(soundLevel/10);
+    if (eventIconSize >= 50.0) {
+      eventIconSize = 50.0;
+    }
+
+    if (eventIconSize < 18.0) {
+      eventIconSize = 18.0;
+    }
 
     var marker = Marker(
-      width: 35.0,
-      height: 35.0,
+      width: eventIconSize + (10.0),
+      height: eventIconSize + (10.0),
       point: coordXY,
       builder: (context) => Container(
-        color: Colors.green,
+        //color: Colors.green,
         alignment: Alignment.topRight,
         child: IconButton(
           icon: eventIcon,
@@ -106,8 +144,18 @@ class _NamurMapState extends State<NamurMap> {
     return marker;
   }
 
-  List<Widget> _infoEvent(String id, LatLng coordXY, String typeEvent,
-      String source, double soundLevel) {
+  List<Widget> _infoEvent(
+      String id,
+      LatLng coordXY,
+      String typeEvent,
+      String source,
+      double soundLevel,
+      String description,
+      String start_time,
+      String end_time,
+      String num_street,
+      String street_name,
+      String website) {
     List<Widget> textWidgets = [];
 
     textWidgets.add(
@@ -123,33 +171,99 @@ class _NamurMapState extends State<NamurMap> {
 
     textWidgets.add(
       Text(
-        typeEvent,
-        textAlign: TextAlign.center,
+        'Catégorie :' + typeEvent,
+        textAlign: TextAlign.left,
         style: TextStyle(
           fontWeight: FontWeight.bold,
-          fontSize: 24.0,
+          fontSize: 20.0,
         ),
       ),
     );
 
     textWidgets.add(
       Text(
-        source,
-        textAlign: TextAlign.center,
+        'Source :' + source,
+        textAlign: TextAlign.left,
         style: TextStyle(
           fontWeight: FontWeight.bold,
-          fontSize: 24.0,
+          fontSize: 20.0,
         ),
       ),
     );
 
     textWidgets.add(
       Text(
-        soundLevel.toString(),
+        'Description :' + description.toString(),
+        textAlign: TextAlign.left,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 20.0,
+        ),
+      ),
+    );
+
+    textWidgets.add(
+      Text(
+        'Niveau de décibels :' + soundLevel.toString(),
+        textAlign: TextAlign.left,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 20.0,
+        ),
+      ),
+    );
+
+    textWidgets.add(
+      Text(
+        'Début :' + start_time.toString(),
+        textAlign: TextAlign.left,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 20.0,
+        ),
+      ),
+    );
+
+    textWidgets.add(
+      Text(
+        'Fin :' + end_time.toString(),
+        textAlign: TextAlign.left,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 20.0,
+        ),
+      ),
+    );
+
+    textWidgets.add(
+      Text(
+        'Numéro de la rue :' + num_street.toString(),
+        textAlign: TextAlign.left,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 20.0,
+        ),
+      ),
+    );
+
+    textWidgets.add(
+      Text(
+        'Nom de la rue :' + street_name.toString(),
+        textAlign: TextAlign.left,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 20.0,
+        ),
+      ),
+    );
+
+    textWidgets.add(
+      Text(
+        'Site web :' + website.toString(),
         textAlign: TextAlign.center,
         style: TextStyle(
           fontWeight: FontWeight.bold,
-          fontSize: 24.0,
+          fontSize: 20.0,
         ),
       ),
     );

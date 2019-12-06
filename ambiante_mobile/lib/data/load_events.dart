@@ -1,9 +1,76 @@
 import 'dart:convert';
 
+import 'package:ambiante_mobile/main.dart';
 import 'package:http/http.dart' as http;
 
 Future<Map> fetchEvents() async {
-  final response = await http.get('http://vps747217.ovh.net:8181/events');
+
+  print("-------------------------");
+  print(global_city);
+  print(global_cat);
+  print(global_sound);
+
+  var init = false;
+
+  var category = global_cat;
+
+  var city = (global_city);
+
+  var sound_level_max = global_sound;
+
+  var query = 'http://vps747217.ovh.net:8181/events?';
+
+  if (category.length > 0){
+
+    init = true;
+
+    query += 'category=';
+
+    for (var i in category) {
+      query += i+',';
+    }
+    query = query.substring(0, query.length - 1);
+
+  }
+
+  if (city.length > 0){
+
+    if (init){
+      query += '&city=';
+    }
+    else{
+      query += 'city=';
+      init = true;
+    }
+    
+
+    for (var i in city) {
+      query += i+',';
+    }
+    query = query.substring(0, query.length - 1);
+
+  }
+
+  if (sound_level_max.length > 0){
+
+    if (init){
+      query += '&sound_level_max=';
+    }
+    else{
+      query += 'sound_level_max=';
+      init = true;
+    }
+
+    for (var i in sound_level_max) {
+      query += i+',';
+    }
+    query = query.substring(0, query.length - 1);
+
+  }
+
+  print(query);
+  
+  final response = await http.get(query);
 
   if (response.statusCode == 200) {
     // If server returns an OK response, parse the JSON.

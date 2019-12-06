@@ -85,6 +85,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
+  dropdown_formfield:
+    dependency: "direct main"
+    description:
+      name: dropdown_formfield
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -118,6 +125,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.3"
+  flutter_range_slider:
+    dependency: "direct main"
+    description:
+      name: flutter_range_slider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.4.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
