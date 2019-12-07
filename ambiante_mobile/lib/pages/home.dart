@@ -4,7 +4,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:ambiante_mobile/pages/namur_map.dart';
 
 import '../widgets/drawer.dart';
-import 'dart:convert';
 
 class HomePage extends StatelessWidget {
   static const String route = '/';

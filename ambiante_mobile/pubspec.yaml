@@ -19,6 +19,10 @@ dependencies:
   dropdown_formfield: ^0.1.1
 
   flutter_range_slider: ^1.4.0
+
+  datetime_picker_formfield: ^0.1.8
+
+  dropdownfield: ^1.0.3
   
   
 # Required for development

@@ -1,9 +1,10 @@
+
 import 'package:flutter/material.dart';
 
 import './pages/home.dart';
 import './pages/tap_to_add.dart';
 import './pages/filters.dart';
-import 'dart:convert';
+import './pages/legend.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         TapToAddPage.route: (context) => TapToAddPage(),
         FiltersPage.route: (context) => FiltersPage(),
+        LegendPage.route: (context) => LegendPage(),
       },
     );
   }

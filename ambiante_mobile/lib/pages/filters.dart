@@ -2,6 +2,7 @@
 import 'package:ambiante_mobile/main.dart';
 import 'package:ambiante_mobile/pages/home.dart';
 import 'package:flutter/material.dart';
+import 'package:dropdownfield/dropdownfield.dart';
 
 import '../widgets/drawer.dart';
 
@@ -17,6 +18,19 @@ class FiltersPage extends StatefulWidget {
 // Create a corresponding State class.
 // This class holds data related to the form.
 class FiltersPageState extends State<FiltersPage> {
+  var eventType;
+
+  List<String> typesOfEvents = [
+    'foire',
+    'exposition',
+    'conference',
+    'cinema',
+    'sport',
+    'concert',
+    'visite',
+    'spectacle',
+    'unknown',
+  ];
   // Create a global key that uniquely identifies the Form widget
   // and allows validation of the form.
   //
@@ -57,21 +71,18 @@ class FiltersPageState extends State<FiltersPage> {
                   return value.contains('@') ? 'Do not use the @ char.' : null;
                 },
               ),
-              TextFormField(
-                controller: categoryController,
-                decoration: const InputDecoration(
+              DropDownField(
+                  controller: categoryController,
+                  value: eventType,
+                  required: true,
+                  strict: true,
+                  hintText: "Quels types d'évènements vous intéressent ?",
+                  labelText: 'artistique *',
                   icon: Icon(Icons.visibility),
-                  hintText: "Rock, Country, Bibitive *",
-                  labelText: "Quels types d'évènements vous intéressent ?",
-                ),
-                onSaved: (String value) {
-                  // This optional block of code can be used to run
-                  // code when the user saves the form.
-                },
-                validator: (String value) {
-                  return value.contains('@') ? 'Do not use the @ char.' : null;
-                },
-              ),
+                  items: typesOfEvents,
+                  setter: (dynamic newValue) {
+                    eventType = newValue;
+                  }),
               TextFormField(
                 controller: soundController,
                 decoration: const InputDecoration(
@@ -87,6 +98,13 @@ class FiltersPageState extends State<FiltersPage> {
                   return value.contains('@') ? 'Do not use the @ char.' : null;
                 },
               ),
+              Column(
+                children: <Widget>[
+                  Text("Filtres actuels (Ville): " + global_city.toString()),
+                  Text("Filtres actuels (Catégorie): " + global_cat.toString()),
+                  Text("Filtres actuels (Décibel): " + global_sound.toString()),
+                ],
+              ),
               FlatButton(
                 color: Theme.of(context).accentColor,
                 textColor: Colors.white,
@@ -96,15 +114,15 @@ class FiltersPageState extends State<FiltersPage> {
                   'Rafraichir',
                 ),
                 onPressed: () {
-                  if (cityController.value.text.isNotEmpty) {
+                  if (cityController.text.isNotEmpty) {
                     global_city.add(cityController.value.text);
                   }
 
-                  if (categoryController.value.text.isNotEmpty) {
-                    global_cat.add(categoryController.value.text);
+                  if (categoryController.text.isNotEmpty) {
+                    global_cat.add(categoryController.text);
                   }
 
-                  if (soundController.value.text.isNotEmpty) {
+                  if (soundController.text.isNotEmpty) {
                     global_sound.add(soundController.value.text);
                   }
                   Navigator.push(

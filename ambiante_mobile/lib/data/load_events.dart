@@ -5,18 +5,18 @@ import 'package:http/http.dart' as http;
 
 Future<Map> fetchEvents() async {
 
-  print("-------------------------");
-  print(global_city);
-  print(global_cat);
-  print(global_sound);
+  //print("-------------------------");
+  //print(global_city);
+  //print(global_cat);
+  //print(global_sound);
 
   var init = false;
 
   var category = global_cat;
 
-  var city = (global_city);
+  var city = global_city;
 
-  var sound_level_max = global_sound;
+  var soundLevelMax = global_sound;
 
   var query = 'http://vps747217.ovh.net:8181/events?';
 
@@ -51,7 +51,7 @@ Future<Map> fetchEvents() async {
 
   }
 
-  if (sound_level_max.length > 0){
+  if (soundLevelMax.length > 0){
 
     if (init){
       query += '&sound_level_max=';
@@ -61,7 +61,7 @@ Future<Map> fetchEvents() async {
       init = true;
     }
 
-    for (var i in sound_level_max) {
+    for (var i in soundLevelMax) {
       query += i+',';
     }
     query = query.substring(0, query.length - 1);
@@ -71,10 +71,11 @@ Future<Map> fetchEvents() async {
   print(query);
   
   final response = await http.get(query);
+  String body = utf8.decode(response.bodyBytes);
 
   if (response.statusCode == 200) {
     // If server returns an OK response, parse the JSON.
-    return json.decode(response.body);
+    return json.decode(body);
   } else {
     // If that response was not OK, throw an error.
     throw Exception('Failed to load post');

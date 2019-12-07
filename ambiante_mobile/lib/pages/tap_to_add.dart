@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import 'package:uuid/uuid.dart';
-import 'package:mdi/mdi.dart';
-import 'dart:convert';
+import 'package:intl/intl.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:dropdownfield/dropdownfield.dart';
 
 import '../pages/home.dart';
 
 import '../widgets/drawer.dart';
+
+int soundIntensity = 0;
 
 class TapToAddPage extends StatefulWidget {
   static const String route = '/tap';
@@ -29,13 +32,27 @@ class TapToAddPageState extends State<TapToAddPage> {
   @override
   Widget build(BuildContext context) {
     TextEditingController titleController = new TextEditingController();
+    TextEditingController categoryController = new TextEditingController();
     TextEditingController startTimeController = new TextEditingController();
     TextEditingController endTimeController = new TextEditingController();
     TextEditingController descriptionController = new TextEditingController();
-    TextEditingController categoryController = new TextEditingController();
     TextEditingController websiteController = new TextEditingController();
     TextEditingController streetController = new TextEditingController();
     TextEditingController streetNumberController = new TextEditingController();
+
+    var eventType;
+
+    List<String> typesOfEvents = [
+      'foire',
+      'exposition',
+      'conference',
+      'cinema',
+      'sport',
+      'concert',
+      'visite',
+      'spectacle',
+      'unknown',
+    ];
 
     var markers = tappedPoints.map((latlng) {
       return Marker(
@@ -128,23 +145,18 @@ class TapToAddPageState extends State<TapToAddPage> {
                                         : null;
                                   },
                                 ),
-                                TextFormField(
-                                  controller: categoryController,
-                                  decoration: const InputDecoration(
-                                    icon: Icon(Icons.party_mode),
+                                DropDownField(
+                                    controller: categoryController,
+                                    value: eventType,
+                                    required: true,
+                                    strict: true,
                                     hintText: "Quel est le type d'évènement",
-                                    labelText: 'Rock, Metal, Artistique *',
-                                  ),
-                                  onSaved: (String value) {
-                                    // This optional block of code can be used to run
-                                    // code when the user saves the form.
-                                  },
-                                  validator: (String value) {
-                                    return value.contains('@')
-                                        ? 'Do not use the @ char.'
-                                        : null;
-                                  },
-                                ),
+                                    labelText: 'artistique *',
+                                    icon: Icon(Icons.party_mode),
+                                    items: typesOfEvents,
+                                    setter: (dynamic newValue) {
+                                      eventType = newValue;
+                                    }),
                                 TextFormField(
                                   controller: descriptionController,
                                   decoration: const InputDecoration(
@@ -162,38 +174,36 @@ class TapToAddPageState extends State<TapToAddPage> {
                                         : null;
                                   },
                                 ),
-                                TextFormField(
+                                DateTimePickerFormField(
                                   controller: startTimeController,
-                                  decoration: const InputDecoration(
-                                    icon: Icon(Icons.person),
-                                    hintText: 'Donnez une heure de rendez-vous',
-                                    labelText: '18h00-22h00 *',
-                                  ),
-                                  onSaved: (String value) {
-                                    // This optional block of code can be used to run
-                                    // code when the user saves the form.
-                                  },
-                                  validator: (String value) {
-                                    return value.contains('@')
-                                        ? 'Do not use the @ char.'
-                                        : null;
+                                  inputType: InputType.both,
+                                  format: DateFormat("yyyy-mm-ddThh:mm:ss"),
+                                  editable: false,
+                                  decoration: InputDecoration(
+                                      icon: Icon(Icons.timer),
+                                      hintText: "Date du début de l'évènement",
+                                      labelText: "Début de l'évènement",
+                                      hasFloatingPlaceholder: false),
+                                  onChanged: (dt) {
+                                    DateTime date1;
+                                    setState(() => date1 = dt);
+                                    print('Selected date: $date1');
                                   },
                                 ),
-                                TextFormField(
+                                DateTimePickerFormField(
                                   controller: endTimeController,
-                                  decoration: const InputDecoration(
-                                    icon: Icon(Icons.person),
-                                    hintText: "Fin de l'évènement",
-                                    labelText: '18h00-22h00 *',
-                                  ),
-                                  onSaved: (String value) {
-                                    // This optional block of code can be used to run
-                                    // code when the user saves the form.
-                                  },
-                                  validator: (String value) {
-                                    return value.contains('@')
-                                        ? 'Do not use the @ char.'
-                                        : null;
+                                  inputType: InputType.both,
+                                  format: DateFormat("yyyy-mm-ddThh:mm:ss"),
+                                  editable: false,
+                                  decoration: InputDecoration(
+                                      icon: Icon(Icons.time_to_leave),
+                                      hintText: "Date de la fin de l'évènement",
+                                      labelText: "Fin de l'évènement",
+                                      hasFloatingPlaceholder: false),
+                                  onChanged: (dt2) {
+                                    DateTime date2;
+                                    setState(() => date2 = dt2);
+                                    print('Selected date: $date2');
                                   },
                                 ),
                                 TextFormField(
@@ -201,7 +211,8 @@ class TapToAddPageState extends State<TapToAddPage> {
                                   decoration: const InputDecoration(
                                     icon: Icon(Icons.streetview),
                                     hintText: 'rue Jean Colin',
-                                    labelText: "Entrez la rue où votre évènement se déroulera",
+                                    labelText:
+                                        "Entrez la rue où votre évènement se déroulera",
                                   ),
                                   onSaved: (String value) {
                                     // This optional block of code can be used to run
@@ -247,6 +258,7 @@ class TapToAddPageState extends State<TapToAddPage> {
                                         : null;
                                   },
                                 ),
+                                SliderInNavigationBar(),
                                 RaisedButton(
                                   child: Text('Valider'),
                                   onPressed: () {
@@ -254,11 +266,8 @@ class TapToAddPageState extends State<TapToAddPage> {
                                       var id = uuid.v1();
                                       var source = "A user";
                                       var organizers = "A user";
-                                      var soundLevel = 60;
                                       var mail = "user-mail.com";
                                       var phone = "000-000-000";
-                                      var streetNumber = "";
-                                      var street = "";
                                       var city = "Namur";
                                       var zipCode = "5000";
 
@@ -280,7 +289,7 @@ class TapToAddPageState extends State<TapToAddPage> {
                                           tappedPoints[0].latitude,
                                           tappedPoints[0].longitude,
                                           source,
-                                          soundLevel);
+                                          soundIntensity);
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -306,5 +315,88 @@ class TapToAddPageState extends State<TapToAddPage> {
     setState(() {
       tappedPoints = [latlng];
     });
+  }
+}
+
+class SliderInNavigationBar extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new _SliderInNavigationBarScreenState();
+  }
+}
+
+class _SliderInNavigationBarScreenState extends State<SliderInNavigationBar> {
+  //List<Widget> _children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: <Widget>[
+      Container(
+          height: 50,
+          child:
+              Center(child: Text("Niveau de décibels max de votre évènement"))),
+      Slider(
+        value: soundIntensity.toDouble(),
+        min: 0.0,
+        max: 140.0,
+        divisions: 10,
+        activeColor: Colors.red,
+        inactiveColor: Colors.black,
+        label: getLabel(soundIntensity),
+        onChanged: (double newValue) {
+          setState(() {
+            soundIntensity = newValue.round();
+          });
+        },
+      ),
+    ]);
+  }
+}
+
+getLabel(soundIntensity) {
+  if (soundIntensity <= 0) {
+    return "Le vide interstellaire";
+  }
+  if (soundIntensity > 0 && soundIntensity <= 10.0) {
+    return "Le bruit d'une respiration";
+  }
+  if (soundIntensity > 10 && soundIntensity <= 20.0) {
+    return 'le bruit du vents';
+  }
+  if (soundIntensity > 20 && soundIntensity <= 30.0) {
+    return 'Les gens chuchottent';
+  }
+  if (soundIntensity > 30 && soundIntensity <= 40.0) {
+    return "Le bruit d'un frigo";
+  }
+  if (soundIntensity > 40 && soundIntensity <= 50.0) {
+    return 'Le son de la pluie';
+  }
+  if (soundIntensity > 50 && soundIntensity <= 60.0) {
+    return 'Des gens discutent';
+  }
+  if (soundIntensity > 60 && soundIntensity <= 70.0) {
+    return "Le bruit d'une voiture";
+  }
+  if (soundIntensity > 70 && soundIntensity <= 80.0) {
+    return "Le son d'un camion";
+  }
+  if (soundIntensity > 80 && soundIntensity <= 90.0) {
+    return "Le bruit d'un sèche cheveux";
+  }
+  if (soundIntensity > 90 && soundIntensity <= 100.0) {
+    return "Le son d'un hélicoptère";
+  }
+  if (soundIntensity > 100 && soundIntensity <= 110.0) {
+    return "Le son d'une trompette";
+  }
+  if (soundIntensity > 110 && soundIntensity <= 120.0) {
+    return "Le bruit d'une sirène de police";
+  }
+  if (soundIntensity > 120 && soundIntensity <= 130.0) {
+    return "Le vacarme d'un avion";
+  }
+  if (soundIntensity > 130 && soundIntensity <= 140.0) {
+    return "L'explosion de feux d'artifice";
   }
 }

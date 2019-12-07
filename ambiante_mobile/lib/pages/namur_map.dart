@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:ambiante_mobile/data/load_events.dart';
 import 'package:latlong/latlong.dart';
-import 'package:mdi/mdi.dart';
-import 'dart:convert' show utf8;
 
 import 'launch_google_map.dart';
 
@@ -45,10 +43,10 @@ class _NamurMapState extends State<NamurMap> {
         var soundLevel = event['sound_level'];
 
         var description = event['description'];
-        var start_time = event['start_time'];
-        var end_time = event['end_time'];
-        var num_street = event['street_number'];
-        var street_name = event['street'];
+        var startTime = event['start_time'];
+        var endTime = event['end_time'];
+        var numStreet = event['street_number'];
+        var streetName = event['street'];
         var website = event['website'];
         markers.add(createMarker(
             eventName,
@@ -57,10 +55,10 @@ class _NamurMapState extends State<NamurMap> {
             source,
             soundLevel,
             description,
-            start_time,
-            end_time,
-            num_street,
-            street_name,
+            startTime,
+            endTime,
+            numStreet,
+            streetName,
             website));
       }
     });
@@ -74,13 +72,13 @@ class _NamurMapState extends State<NamurMap> {
       String source,
       double soundLevel,
       String description,
-      String start_time,
-      String end_time,
-      String num_street,
-      String street_name,
+      String startTime,
+      String endTime,
+      String numStreet,
+      String streetName,
       String website) {
     var info = _infoEvent(id, coordXY, typeEvent, source, soundLevel,
-        description, start_time, end_time, num_street, street_name, website);
+        description, startTime, endTime, numStreet, streetName, website);
 
     Map listIcons = {
       'foire': Icon(Icons.supervised_user_circle),
@@ -151,10 +149,10 @@ class _NamurMapState extends State<NamurMap> {
       String source,
       double soundLevel,
       String description,
-      String start_time,
-      String end_time,
-      String num_street,
-      String street_name,
+      String startTime,
+      String endTime,
+      String numStreet,
+      String streetName,
       String website) {
     List<Widget> textWidgets = [];
 
@@ -215,7 +213,7 @@ class _NamurMapState extends State<NamurMap> {
 
     textWidgets.add(
       Text(
-        'Début :' + start_time.toString(),
+        'Début :' + startTime.toString(),
         textAlign: TextAlign.left,
         style: TextStyle(
           fontWeight: FontWeight.bold,
@@ -226,7 +224,7 @@ class _NamurMapState extends State<NamurMap> {
 
     textWidgets.add(
       Text(
-        'Fin :' + end_time.toString(),
+        'Fin :' + endTime.toString(),
         textAlign: TextAlign.left,
         style: TextStyle(
           fontWeight: FontWeight.bold,
@@ -237,7 +235,7 @@ class _NamurMapState extends State<NamurMap> {
 
     textWidgets.add(
       Text(
-        'Numéro de la rue :' + num_street.toString(),
+        'Numéro de la rue :' + numStreet.toString(),
         textAlign: TextAlign.left,
         style: TextStyle(
           fontWeight: FontWeight.bold,
@@ -248,7 +246,7 @@ class _NamurMapState extends State<NamurMap> {
 
     textWidgets.add(
       Text(
-        'Nom de la rue :' + street_name.toString(),
+        'Nom de la rue :' + streetName.toString(),
         textAlign: TextAlign.left,
         style: TextStyle(
           fontWeight: FontWeight.bold,

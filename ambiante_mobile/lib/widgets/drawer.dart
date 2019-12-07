@@ -1,8 +1,10 @@
+
 import 'package:flutter/material.dart';
 
 import '../pages/home.dart';
 import '../pages/filters.dart';
 import '../pages/tap_to_add.dart';
+import '../pages/legend.dart';
 
 Drawer buildDrawer(BuildContext context, String currentRoute) {
   return Drawer(
@@ -32,6 +34,13 @@ Drawer buildDrawer(BuildContext context, String currentRoute) {
           selected: currentRoute == FiltersPage.route,
           onTap: () {
             Navigator.pushReplacementNamed(context, FiltersPage.route);
+          },
+        ),
+        ListTile(
+          title: const Text("Voir la légende"),
+          selected: currentRoute == LegendPage.route,
+          onTap: () {
+            Navigator.pushReplacementNamed(context, LegendPage.route);
           },
         ),
       ],
