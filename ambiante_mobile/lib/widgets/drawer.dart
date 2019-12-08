@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../pages/home.dart';
 import '../pages/filters.dart';
-import '../pages/tap_to_add.dart';
 import '../pages/legend.dart';
 
 Drawer buildDrawer(BuildContext context, String currentRoute) {
@@ -14,13 +13,6 @@ Drawer buildDrawer(BuildContext context, String currentRoute) {
           child: Center(
             child: Text('Ambiante et mobile App'),
           ),
-        ),
-        ListTile(
-          title: const Text('Ajouter un évènement'),
-          selected: currentRoute == TapToAddPage.route,
-          onTap: () {
-            Navigator.pushReplacementNamed(context, TapToAddPage.route);
-          },
         ),
         ListTile(
           title: const Text('Carte des évènements'),
