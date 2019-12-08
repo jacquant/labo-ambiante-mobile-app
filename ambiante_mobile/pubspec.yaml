@@ -7,8 +7,11 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^0.1.2
-  
-  flutter_map: ^0.7.3
+
+  flutter_map:
+    git:
+      url: git://github.com/okaxaki/flutter_map.git
+      ref: fix/support-flutter-1.10
   # Launch urls in other apps
   url_launcher: ^5.2.5
 

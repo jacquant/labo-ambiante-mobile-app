@@ -102,6 +102,7 @@ class TapToAddPageState extends State<TapToAddPage> {
                           'pk.eyJ1IjoiamFjcXVhbnQiLCJhIjoiY2syeHFpemxqMDAxYzNsbXFrcWwwOGxmbyJ9.F94lOloBRxltcsySUlvwGA',
                       'id': 'mapbox.streets',
                     },
+                    tileProvider: NonCachingNetworkTileProvider()
                   ),
                   MarkerLayerOptions(markers: markers)
                 ],

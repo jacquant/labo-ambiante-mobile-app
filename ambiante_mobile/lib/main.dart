@@ -8,9 +8,9 @@ import './pages/legend.dart';
 
 void main() => runApp(MyApp());
 
-List<String> global_city = [];
-List<String> global_cat = [];
-List<String> global_sound = [];
+List<String> globalCity = [];
+List<String> globalCat = [];
+List<String> globalSound = [];
 
 class MyApp extends StatelessWidget {
 
@@ -19,9 +19,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Map Example',
+      title: 'Ambiante et mobile app',
       theme: ThemeData(
-        primarySwatch: mapBoxBlue,
+        primarySwatch: mapBoxPurple,
       ),
       home: HomePage(),
       routes: <String, WidgetBuilder>{
@@ -36,19 +36,19 @@ class MyApp extends StatelessWidget {
 // Generated using Material Design Palette/Theme Generator
 // http://mcg.mbitson.com/
 // https://github.com/mbitson/mcg
-const int _bluePrimary = 0xFF395afa;
-const MaterialColor mapBoxBlue = MaterialColor(
-  _bluePrimary,
+const int _purplePrimary = 0xFF9C27B0;
+const MaterialColor mapBoxPurple = MaterialColor(
+  _purplePrimary,
   <int, Color>{
-    50: Color(0xFFE7EBFE),
-    100: Color(0xFFC4CEFE),
-    200: Color(0xFF9CADFD),
-    300: Color(0xFF748CFC),
-    400: Color(0xFF5773FB),
-    500: Color(_bluePrimary),
-    600: Color(0xFF3352F9),
-    700: Color(0xFF2C48F9),
-    800: Color(0xFF243FF8),
-    900: Color(0xFF172EF6),
+    50: Color(0xFFF3E5F5),
+    100: Color(0xFFE1BEE7),
+    200: Color(0xFFCE93D8),
+    300: Color(0xFFBA68C8),
+    400: Color(0xFFAB47BC),
+    500: Color(_purplePrimary),
+    600: Color(0xFF8E24AA),
+    700: Color(0xFF7B1FA2),
+    800: Color(0xFF6A1B9A),
+    900: Color(0xFF4A148C),
   },
 );

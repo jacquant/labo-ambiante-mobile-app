@@ -12,7 +12,7 @@ Drawer buildDrawer(BuildContext context, String currentRoute) {
       children: <Widget>[
         const DrawerHeader(
           child: Center(
-            child: Text('Flutter Map Examples'),
+            child: Text('Ambiante et mobile App'),
           ),
         ),
         ListTile(

@@ -100,9 +100,9 @@ class FiltersPageState extends State<FiltersPage> {
               ),
               Column(
                 children: <Widget>[
-                  Text("Filtres actuels (Ville): " + global_city.toString()),
-                  Text("Filtres actuels (Catégorie): " + global_cat.toString()),
-                  Text("Filtres actuels (Décibel): " + global_sound.toString()),
+                  Text("Filtres actuels (Ville): " + globalCity.toString()),
+                  Text("Filtres actuels (Catégorie): " + globalCat.toString()),
+                  Text("Filtres actuels (Décibel): " + globalSound.toString()),
                 ],
               ),
               FlatButton(
@@ -115,15 +115,15 @@ class FiltersPageState extends State<FiltersPage> {
                 ),
                 onPressed: () {
                   if (cityController.text.isNotEmpty) {
-                    global_city.add(cityController.value.text);
+                    globalCity.add(cityController.value.text);
                   }
 
                   if (categoryController.text.isNotEmpty) {
-                    global_cat.add(categoryController.text);
+                    globalCat.add(categoryController.text);
                   }
 
                   if (soundController.text.isNotEmpty) {
-                    global_sound.add(soundController.value.text);
+                    globalSound.add(soundController.value.text);
                   }
                   Navigator.push(
                     context,
@@ -140,9 +140,9 @@ class FiltersPageState extends State<FiltersPage> {
                   'Remettre les filtres à zéro !',
                 ),
                 onPressed: () {
-                  global_city = [];
-                  global_cat = [];
-                  global_sound = [];
+                  globalCity = [];
+                  globalCat = [];
+                  globalSound = [];
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => HomePage()),

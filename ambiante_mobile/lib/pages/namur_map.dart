@@ -313,6 +313,7 @@ class _NamurMapState extends State<NamurMap> {
                 'pk.eyJ1IjoiamFjcXVhbnQiLCJhIjoiY2syeHFpemxqMDAxYzNsbXFrcWwwOGxmbyJ9.F94lOloBRxltcsySUlvwGA',
             'id': 'mapbox.streets',
           },
+            tileProvider: NonCachingNetworkTileProvider()
         ),
         MarkerLayerOptions(markers: markers),
       ],
