@@ -1,4 +1,4 @@
-package com.johnpryan.leafletflutterexample;
+package be.unamur.ambiante_mobile;
 
 import android.os.Bundle;
 

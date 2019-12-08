@@ -6,17 +6,17 @@ import 'package:http/http.dart' as http;
 Future<Map> fetchEvents() async {
 
   //print("-------------------------");
-  //print(global_city);
-  //print(global_cat);
-  //print(global_sound);
+  //print(globalCity);
+  //print(globalCat);
+  //print(globalSound);
 
   var init = false;
 
-  var category = global_cat;
+  var category = globalCat;
 
-  var city = global_city;
+  var city = globalCity;
 
-  var soundLevelMax = global_sound;
+  var soundLevelMax = globalSound;
 
   var query = 'http://vps747217.ovh.net:8181/events?';
 
