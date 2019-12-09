@@ -100,7 +100,7 @@ class _NamurMapState extends State<NamurMap> {
 
     var eventColor = Colors.red;
     if (source == 'namur-agenda-des-evenements') {
-      eventColor = Colors.blue;
+      eventColor = Colors.deepPurple;
     }
 
     var eventIconSize = 5 * (soundLevel / 10);

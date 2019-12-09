@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
 // Generated using Material Design Palette/Theme Generator
 // http://mcg.mbitson.com/
 // https://github.com/mbitson/mcg
-const int _purplePrimary = 0xFF9C27B0;
+const int _purplePrimary = 0xFF2962FF;
 const MaterialColor mapBoxPurple = MaterialColor(
   _purplePrimary,
   <int, Color>{

@@ -62,7 +62,7 @@ class TapToAddPageState extends State<TapToAddPage> {
         builder: (ctx) => Container(
           child: IconButton(
             icon: Icon(Icons.add_location),
-            color: Colors.blue,
+            color: Colors.deepPurple,
             iconSize: 45.0,
             onPressed: () {
               print('Marker tapped');

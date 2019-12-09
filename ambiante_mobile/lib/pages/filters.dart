@@ -4,6 +4,7 @@ import 'package:ambiante_mobile/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdownfield/dropdownfield.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:intl/intl.dart';
 
 import '../widgets/drawer.dart';
@@ -192,47 +193,186 @@ class _BetterFilterShowState extends State<BetterFilterShow> {
 
   @override
   Widget build(BuildContext context) {
-    return showFilterNicely();
-  }
-}
+    return Column(
+      children: <Widget>[
+        Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Container(
+                    width: 50,
+                    height: 25,
+                    child: FlatButton(
+                      splashColor: Colors.red,
+                      color: Colors.red,
+                      textColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15))),
+                      child: Text(
+                        'X',
+                      ),
+                      onPressed: () {
+                        globalCity = [];
 
-Column showFilterNicely() {
-  return Column(
-    children: <Widget>[
-      Row(
-        children: <Widget>[
-          Text(
-            "Filtres actuels (Ville): ",
-          ),
-          Text(globalCity.toString())
-        ],
-      ),
-      Row(
-        children: <Widget>[
-          Text("Filtres actuels (Catégorie): "),
-          Text(globalCat.toString())
-        ],
-      ),
-      Row(
-        children: <Widget>[
-          Text("Filtres actuels (Décibel): "),
-          Text(globalSound.toString())
-        ],
-      ),
-      Row(
-        children: <Widget>[
-          Text("Filtres actuels (Date maximale): "),
-          Text(globalMaxDate.toString())
-        ],
-      ),
-      Row(  
-        children: <Widget>[
-          Text("Filtres actuels (Date minimale): "),
-          Text(globalMinDate.toString())
-        ],
-      ),
-    ],
-  );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FiltersPage()),
+                        );
+                      },
+                    )),
+                Text(" Filtres actuels (Ville): "),
+              ],
+            ),
+            Text(
+              globalCity.toString(),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Container(
+                    width: 50,
+                    height: 25,
+                    child: FlatButton(
+                      splashColor: Colors.red,
+                      color: Colors.red,
+                      textColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15))),
+                      child: Text(
+                        'X',
+                      ),
+                      onPressed: () {
+                        globalCat = [];
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FiltersPage()),
+                        );
+                      },
+                    )),
+                Text(" Filtres actuels (Catégorie): "),
+              ],
+            ),
+            Text(
+              globalCat.toString(),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Container(
+                  width: 50,
+                  height: 25,
+                  child: FlatButton(
+                    splashColor: Colors.red,
+                    color: Colors.red,
+                    textColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                    child: Text(
+                      'X',
+                    ),
+                    onPressed: () {
+                      globalSound = [];
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FiltersPage()),
+                      );
+                    },
+                  ),
+                ),
+                Text(" Filtres actuels (Décibel): "),
+              ],
+            ),
+            Text(
+              globalSound.toString(),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Container(
+                  width: 50,
+                  height: 25,
+                  child: FlatButton(
+                    splashColor: Colors.red,
+                    color: Colors.red,
+                    textColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                    child: Text(
+                      'X',
+                    ),
+                    onPressed: () {
+                      globalMaxDate = [];
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FiltersPage()),
+                      );
+                    },
+                  ),
+                ),
+                Text(" Filtres actuels (Date maximale): "),
+              ],
+            ),
+            Text(
+              globalMaxDate.toString(),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Container(
+                  width: 50,
+                  height: 25,
+                  child: FlatButton(
+                    splashColor: Colors.red,
+                    color: Colors.red,
+                    textColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                    child: Text(
+                      'X',
+                    ),
+                    onPressed: () {
+                      globalMinDate = [];
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FiltersPage()),
+                      );
+                    },
+                  ),
+                ),
+                Text(" Filtres actuels (Date minimale): "),
+              ],
+            ),
+            Text(
+              globalMinDate.toString(),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        )
+      ],
+    );
+  }
 }
 
 int soundIntensityFilter = 140;
