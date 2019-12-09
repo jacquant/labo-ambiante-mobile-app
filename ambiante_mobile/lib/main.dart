@@ -11,6 +11,8 @@ void main() => runApp(MyApp());
 List<String> globalCity = [];
 List<String> globalCat = [];
 List<String> globalSound = [];
+List<String> globalMaxDate = [];
+List<String> globalMinDate = [];
 
 class MyApp extends StatelessWidget {
 

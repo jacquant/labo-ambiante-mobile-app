@@ -3,6 +3,8 @@ import 'package:ambiante_mobile/main.dart';
 import 'package:ambiante_mobile/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdownfield/dropdownfield.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:intl/intl.dart';
 
 import '../widgets/drawer.dart';
 
@@ -42,7 +44,8 @@ class FiltersPageState extends State<FiltersPage> {
   Widget build(BuildContext context) {
     TextEditingController cityController = new TextEditingController();
     TextEditingController categoryController = new TextEditingController();
-    TextEditingController soundController = new TextEditingController();
+    TextEditingController maxDateController = new TextEditingController();
+    TextEditingController minDateController = new TextEditingController();
 
     return Scaffold(
       appBar: AppBar(title: Text("Définissez votre propre filtre !")),
@@ -83,27 +86,37 @@ class FiltersPageState extends State<FiltersPage> {
                   setter: (dynamic newValue) {
                     eventType = newValue;
                   }),
-              TextFormField(
-                controller: soundController,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.surround_sound),
-                  hintText: '80.0 *',
-                  labelText: 'Niveau décibels maximum ?',
-                ),
-                onSaved: (String value) {
-                  // This optional block of code can be used to run
-                  // code when the user saves the form.
-                },
-                validator: (String value) {
-                  return value.contains('@') ? 'Do not use the @ char.' : null;
+              SliderInFilter(),
+              DateTimePickerFormField(
+                controller: maxDateController,
+                inputType: InputType.both,
+                format: DateFormat("yyyy-MM-ddThh:mm:ss"),
+                editable: false,
+                decoration: InputDecoration(
+                    icon: Icon(Icons.time_to_leave),
+                    labelText: "Date maximale d'affichage",
+                    hasFloatingPlaceholder: false),
+                onChanged: (dt2) {
+                  DateTime date2;
+                  setState(() => date2 = dt2);
+                  print('Selected date: $date2');
                 },
               ),
-              Column(
-                children: <Widget>[
-                  Text("Filtres actuels (Ville): " + globalCity.toString()),
-                  Text("Filtres actuels (Catégorie): " + globalCat.toString()),
-                  Text("Filtres actuels (Décibel): " + globalSound.toString()),
-                ],
+              DateTimePickerFormField(
+                autofocus: false,
+                controller: minDateController,
+                inputType: InputType.both,
+                format: DateFormat("yyyy-MM-ddThh:mm:ss"),
+                editable: false,
+                decoration: InputDecoration(
+                    icon: Icon(Icons.time_to_leave),
+                    labelText: "Date minimale d'affichage",
+                    hasFloatingPlaceholder: false),
+                onChanged: (dt2) {
+                  DateTime date2;
+                  setState(() => date2 = dt2);
+                  print('Selected date: $date2');
+                },
               ),
               FlatButton(
                 color: Theme.of(context).accentColor,
@@ -111,38 +124,50 @@ class FiltersPageState extends State<FiltersPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 child: Text(
-                  'Rafraichir',
+                  'Actualiser',
                 ),
                 onPressed: () {
                   if (cityController.text.isNotEmpty) {
-                    globalCity.add(cityController.value.text);
+                    globalCity.add(cityController.text);
                   }
 
                   if (categoryController.text.isNotEmpty) {
                     globalCat.add(categoryController.text);
                   }
 
-                  if (soundController.text.isNotEmpty) {
-                    globalSound.add(soundController.value.text);
+                  if (soundIntensityFilter != null) {
+                    globalSound = [soundIntensityFilter.toString()];
                   }
+
+                  if (maxDateController.text.isNotEmpty) {
+                    globalMaxDate = [maxDateController.text];
+                  }
+
+                  if (minDateController.text.isNotEmpty) {
+                    globalMinDate = [minDateController.text];
+                  }
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => HomePage()),
                   );
                 },
               ),
+              BetterFilterShow(),
               FlatButton(
                 color: Colors.red,
                 textColor: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 child: Text(
-                  'Remettre les filtres à zéro !',
+                  'Remettre tous les filtres à zéro !',
                 ),
                 onPressed: () {
                   globalCity = [];
                   globalCat = [];
                   globalSound = [];
+                  globalMaxDate = [];
+                  globalMinDate = [];
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => HomePage()),
@@ -152,5 +177,148 @@ class FiltersPageState extends State<FiltersPage> {
             ],
           )),
     );
+  }
+}
+
+class BetterFilterShow extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new _BetterFilterShowState();
+  }
+}
+
+class _BetterFilterShowState extends State<BetterFilterShow> {
+  //List<Widget> _children;
+
+  @override
+  Widget build(BuildContext context) {
+    return showFilterNicely();
+  }
+}
+
+Column showFilterNicely() {
+  return Column(
+    children: <Widget>[
+      Row(
+        children: <Widget>[
+          Text(
+            "Filtres actuels (Ville): ",
+          ),
+          Text(globalCity.toString())
+        ],
+      ),
+      Row(
+        children: <Widget>[
+          Text("Filtres actuels (Catégorie): "),
+          Text(globalCat.toString())
+        ],
+      ),
+      Row(
+        children: <Widget>[
+          Text("Filtres actuels (Décibel): "),
+          Text(globalSound.toString())
+        ],
+      ),
+      Row(
+        children: <Widget>[
+          Text("Filtres actuels (Date maximale): "),
+          Text(globalMaxDate.toString())
+        ],
+      ),
+      Row(  
+        children: <Widget>[
+          Text("Filtres actuels (Date minimale): "),
+          Text(globalMinDate.toString())
+        ],
+      ),
+    ],
+  );
+}
+
+int soundIntensityFilter = 140;
+
+class SliderInFilter extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new _SliderInFilterState();
+  }
+}
+
+class _SliderInFilterState extends State<SliderInFilter> {
+  //List<Widget> _children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: <Widget>[
+      Container(
+          height: 50,
+          child:
+              Center(child: Text("Niveau de décibels max de votre évènement"))),
+      Slider(
+        value: soundIntensityFilter.toDouble(),
+        min: 0.0,
+        max: 140.0,
+        divisions: 10,
+        activeColor: Colors.red,
+        inactiveColor: Colors.black,
+        label: getLabel(soundIntensityFilter),
+        onChanged: (double newValue) {
+          setState(() {
+            soundIntensityFilter = newValue.round();
+          });
+        },
+      ),
+    ]);
+  }
+}
+
+getLabel(soundIntensityFilter) {
+  if (soundIntensityFilter <= 0) {
+    return soundIntensityFilter.toString() + " Db - Le vide interstellaire";
+  }
+  if (soundIntensityFilter > 0 && soundIntensityFilter <= 10.0) {
+    return soundIntensityFilter.toString() + " Db - Le bruit d'une respiration";
+  }
+  if (soundIntensityFilter > 10 && soundIntensityFilter <= 20.0) {
+    return soundIntensityFilter.toString() + ' Db - le bruit du vents';
+  }
+  if (soundIntensityFilter > 20 && soundIntensityFilter <= 30.0) {
+    return soundIntensityFilter.toString() + ' Db - Les gens chuchottent';
+  }
+  if (soundIntensityFilter > 30 && soundIntensityFilter <= 40.0) {
+    return soundIntensityFilter.toString() + " Db - Le bruit d'un frigo";
+  }
+  if (soundIntensityFilter > 40 && soundIntensityFilter <= 50.0) {
+    return soundIntensityFilter.toString() + ' Db - Le son de la pluie';
+  }
+  if (soundIntensityFilter > 50 && soundIntensityFilter <= 60.0) {
+    return soundIntensityFilter.toString() + ' Db - Des gens discutent';
+  }
+  if (soundIntensityFilter > 60 && soundIntensityFilter <= 70.0) {
+    return soundIntensityFilter.toString() + " Db - Le bruit d'une voiture";
+  }
+  if (soundIntensityFilter > 70 && soundIntensityFilter <= 80.0) {
+    return soundIntensityFilter.toString() + " Db - Le son d'un camion";
+  }
+  if (soundIntensityFilter > 80 && soundIntensityFilter <= 90.0) {
+    return soundIntensityFilter.toString() +
+        " Db - Le bruit d'un sèche cheveux";
+  }
+  if (soundIntensityFilter > 90 && soundIntensityFilter <= 100.0) {
+    return soundIntensityFilter.toString() + " Db - Le son d'un hélicoptère";
+  }
+  if (soundIntensityFilter > 100 && soundIntensityFilter <= 110.0) {
+    return soundIntensityFilter.toString() + " Db - Le son d'une trompette";
+  }
+  if (soundIntensityFilter > 110 && soundIntensityFilter <= 120.0) {
+    return soundIntensityFilter.toString() +
+        " Db - Le bruit d'une sirène de police";
+  }
+  if (soundIntensityFilter > 120 && soundIntensityFilter <= 130.0) {
+    return soundIntensityFilter.toString() + " Db - Le vacarme d'un avion";
+  }
+  if (soundIntensityFilter > 130 && soundIntensityFilter <= 140.0) {
+    return soundIntensityFilter.toString() +
+        " Db - L'explosion de feux d'artifice";
   }
 }

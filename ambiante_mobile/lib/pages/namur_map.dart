@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:ambiante_mobile/data/load_events.dart';
 import 'package:latlong/latlong.dart';
+import 'package:intl/intl.dart';
 
 import 'launch_google_map.dart';
 
@@ -102,7 +103,7 @@ class _NamurMapState extends State<NamurMap> {
       eventColor = Colors.blue;
     }
 
-    var eventIconSize = 5*(soundLevel/10);
+    var eventIconSize = 5 * (soundLevel / 10);
     if (eventIconSize >= 50.0) {
       eventIconSize = 50.0;
     }
@@ -156,6 +157,13 @@ class _NamurMapState extends State<NamurMap> {
       String website) {
     List<Widget> textWidgets = [];
 
+    var parsedDateEnd = DateTime.parse(startTime);
+    var parsedDateStart = DateTime.parse(startTime);
+
+    String replacedendTime = DateFormat('dd-MM-yyyy – kk:mm').format(parsedDateEnd);
+    String replacedstartTime = DateFormat('dd-MM-yyyy – kk:mm').format(parsedDateStart);
+
+
     textWidgets.add(
       Text(
         id,
@@ -167,104 +175,188 @@ class _NamurMapState extends State<NamurMap> {
       ),
     );
 
-    textWidgets.add(
-      Text(
-        'Catégorie :' + typeEvent,
-        textAlign: TextAlign.left,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20.0,
+    textWidgets.add(Column(
+      children: <Widget>[
+        Text(
+          'Catégorie :',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
         ),
-      ),
-    );
+        Text(
+          typeEvent.toString(),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 18.0,
+          ),
+        ),
+      ],
+    ));
 
-    textWidgets.add(
-      Text(
-        'Source :' + source,
-        textAlign: TextAlign.left,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20.0,
+    textWidgets.add(Column(
+      children: <Widget>[
+        Text(
+          'Source :',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
         ),
-      ),
-    );
+        Text(
+          source.toString(),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 18.0,
+          ),
+        ),
+      ],
+    ));
 
-    textWidgets.add(
-      Text(
-        'Description :' + description.toString(),
-        textAlign: TextAlign.left,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20.0,
+    textWidgets.add(Column(
+      children: <Widget>[
+        Text(
+          'Description :',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
         ),
-      ),
-    );
+        Text(
+          description.toString(),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 18.0,
+          ),
+        ),
+      ],
+    ));
 
-    textWidgets.add(
-      Text(
-        'Niveau de décibels :' + soundLevel.toString(),
-        textAlign: TextAlign.left,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20.0,
+    textWidgets.add(Column(
+      children: <Widget>[
+        Text(
+          'Niveau de décibels :',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
         ),
-      ),
-    );
+        Text(
+          soundLevel.toString(),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 18.0,
+          ),
+        ),
+      ],
+    ));
 
-    textWidgets.add(
-      Text(
-        'Début :' + startTime.toString(),
-        textAlign: TextAlign.left,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20.0,
+    textWidgets.add(Column(
+      children: <Widget>[
+        Text(
+          'Début :',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
         ),
-      ),
-    );
+        Text(
+          replacedstartTime,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 18.0,
+          ),
+        ),
+      ],
+    ));
 
-    textWidgets.add(
-      Text(
-        'Fin :' + endTime.toString(),
-        textAlign: TextAlign.left,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20.0,
+    textWidgets.add(Column(
+      children: <Widget>[
+        Text(
+          'Fin :',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
         ),
-      ),
-    );
+        Text(
+          replacedendTime,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 18.0,
+          ),
+        ),
+      ],
+    ));
 
-    textWidgets.add(
-      Text(
-        'Numéro de la rue :' + numStreet.toString(),
-        textAlign: TextAlign.left,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20.0,
-        ),
-      ),
-    );
 
-    textWidgets.add(
-      Text(
-        'Nom de la rue :' + streetName.toString(),
-        textAlign: TextAlign.left,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20.0,
+    textWidgets.add(Column(
+      children: <Widget>[
+        Text(
+          'Numéro de la rue :',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
         ),
-      ),
-    );
+        Text(
+          numStreet.toString(),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 18.0,
+          ),
+        ),
+      ],
+    ));
 
-    textWidgets.add(
-      Text(
-        'Site web :' + website.toString(),
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20.0,
+    textWidgets.add(Column(
+      children: <Widget>[
+        Text(
+          'Nom de la rue :',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
         ),
-      ),
-    );
+        Text(
+          streetName.toString(),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 18.0,
+          ),
+        ),
+      ],
+    ));
+
+    textWidgets.add(Column(
+      children: <Widget>[
+        Text(
+          'Site web :',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
+        ),
+        Text(
+          website.toString(),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 18.0,
+          ),
+        ),
+      ],
+    ));
+
+    
 
     textWidgets.add(
       Padding(

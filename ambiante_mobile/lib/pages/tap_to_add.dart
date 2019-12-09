@@ -177,7 +177,7 @@ class TapToAddPageState extends State<TapToAddPage> {
                                 DateTimePickerFormField(
                                   controller: startTimeController,
                                   inputType: InputType.both,
-                                  format: DateFormat("yyyy-mm-ddThh:mm:ss"),
+                                  format: DateFormat("yyyy-MM-ddThh:mm:ss"),
                                   editable: false,
                                   decoration: InputDecoration(
                                       icon: Icon(Icons.timer),
@@ -193,7 +193,7 @@ class TapToAddPageState extends State<TapToAddPage> {
                                 DateTimePickerFormField(
                                   controller: endTimeController,
                                   inputType: InputType.both,
-                                  format: DateFormat("yyyy-mm-ddThh:mm:ss"),
+                                  format: DateFormat("yyyy-MM-ddThh:mm:ss"),
                                   editable: false,
                                   decoration: InputDecoration(
                                       icon: Icon(Icons.time_to_leave),
@@ -262,6 +262,7 @@ class TapToAddPageState extends State<TapToAddPage> {
                                 RaisedButton(
                                   child: Text('Valider'),
                                   onPressed: () {
+                                    
                                     if (tappedPoints.length == 1) {
                                       var id = uuid.v1();
                                       var source = "A user";
@@ -358,45 +359,45 @@ getLabel(soundIntensity) {
     return "Le vide interstellaire";
   }
   if (soundIntensity > 0 && soundIntensity <= 10.0) {
-    return "Le bruit d'une respiration";
+    return soundIntensity.toString() + " Db - Le bruit d'une respiration";
   }
   if (soundIntensity > 10 && soundIntensity <= 20.0) {
-    return 'le bruit du vents';
+    return soundIntensity.toString() + " Db - le bruit du vents";
   }
   if (soundIntensity > 20 && soundIntensity <= 30.0) {
-    return 'Les gens chuchottent';
+    return soundIntensity.toString() + " Db - Les gens chuchottent";
   }
   if (soundIntensity > 30 && soundIntensity <= 40.0) {
-    return "Le bruit d'un frigo";
+    return soundIntensity.toString() + " Db - Le bruit d'un frigo";
   }
   if (soundIntensity > 40 && soundIntensity <= 50.0) {
-    return 'Le son de la pluie';
+    return soundIntensity.toString() + " Db - Le son de la pluie";
   }
   if (soundIntensity > 50 && soundIntensity <= 60.0) {
-    return 'Des gens discutent';
+    return soundIntensity.toString() + " Db - Des gens discutent";
   }
   if (soundIntensity > 60 && soundIntensity <= 70.0) {
-    return "Le bruit d'une voiture";
+    return soundIntensity.toString() + " Db - Le bruit d'une voiture";
   }
   if (soundIntensity > 70 && soundIntensity <= 80.0) {
-    return "Le son d'un camion";
+    return soundIntensity.toString() + " Db - Le son d'un camion";
   }
   if (soundIntensity > 80 && soundIntensity <= 90.0) {
-    return "Le bruit d'un sèche cheveux";
+    return soundIntensity.toString() + " Db - Le bruit d'un sèche cheveux";
   }
   if (soundIntensity > 90 && soundIntensity <= 100.0) {
-    return "Le son d'un hélicoptère";
+    return soundIntensity.toString() + " Db - Le son d'un hélicoptère";
   }
   if (soundIntensity > 100 && soundIntensity <= 110.0) {
-    return "Le son d'une trompette";
+    return soundIntensity.toString() + " Db - Le son d'une trompette";
   }
   if (soundIntensity > 110 && soundIntensity <= 120.0) {
-    return "Le bruit d'une sirène de police";
+    return soundIntensity.toString() + " Db - Le bruit d'une sirène de police";
   }
   if (soundIntensity > 120 && soundIntensity <= 130.0) {
-    return "Le vacarme d'un avion";
+    return soundIntensity.toString() + " Db - Le vacarme d'un avion";
   }
   if (soundIntensity > 130 && soundIntensity <= 140.0) {
-    return "L'explosion de feux d'artifice";
+    return soundIntensity.toString() + " Db - L'explosion de feux d'artifice";
   }
 }

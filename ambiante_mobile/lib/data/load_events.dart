@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
 import 'package:ambiante_mobile/main.dart';
 import 'package:http/http.dart' as http;
@@ -17,6 +18,10 @@ Future<Map> fetchEvents() async {
   var city = globalCity;
 
   var soundLevelMax = globalSound;
+
+  var startTimeMax = globalMaxDate;
+
+  var startTimeMin = globalMinDate;
 
   var query = 'http://vps747217.ovh.net:8181/events?';
 
@@ -66,6 +71,56 @@ Future<Map> fetchEvents() async {
     }
     query = query.substring(0, query.length - 1);
 
+  }
+
+  if (startTimeMax.length > 0){
+
+    if (init){
+      query += '&start_time_max=';
+    }
+    else{
+      query += 'start_time_max=';
+      init = true;
+    }
+
+    for (var i in startTimeMax) {
+      query += i+',';
+    }
+    query = query.substring(0, query.length - 1);
+
+  }
+
+  if (startTimeMin.length > 0){
+
+    if (init){
+      query += '&start_time_min=';
+    }
+    else{
+      query += 'start_time_min=';
+      init = true;
+    }
+
+    for (var i in startTimeMin) {
+      query += i+',';
+    }
+    query = query.substring(0, query.length - 1);
+
+  }
+
+  if (startTimeMin.length == 0){
+
+    if (init){
+      query += '&start_time_min=';
+    }
+    else{
+      query += 'start_time_min=';
+      init = true;
+    }
+
+    var now = new DateTime.now();
+    var currentDate = new DateFormat("yyyy-MM-dd").format(now)+"T00:00:00";
+
+    query += currentDate;
   }
 
   print(query);
